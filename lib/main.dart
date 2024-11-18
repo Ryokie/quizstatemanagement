@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'screens/main_screen.dart'; // Pastikan file ini ada
 import 'providers/theme_provider.dart';
 import 'providers/font_provider.dart';
-import 'screens/main_screen.dart';
+import 'themes/app_themes.dart';
+import 'themes/app_fonts.dart';
 
 void main() {
   runApp(
@@ -19,21 +21,24 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Ambil theme dan font dari provider
+    // Mengambil tema dan font yang dipilih
     final themeProvider = Provider.of<ThemeProvider>(context);
     final fontProvider = Provider.of<FontProvider>(context);
 
-    // Mengatur theme dan font yang dipilih
     return MaterialApp(
-      title: 'Multi-Theme & Font App',
-      theme: themeProvider.currentTheme.copyWith(
-        textTheme: themeProvider.currentTheme.textTheme.copyWith(
-          bodyMedium: TextStyle(fontFamily: fontProvider.currentFont),
-          headlineSmall: TextStyle(fontFamily: fontProvider.currentFont),
-          titleLarge: TextStyle(fontFamily: fontProvider.currentFont),
-        ),
-      ),
-      home: MainScreen(),
+      title: 'Multi Theme App', // Nama aplikasi Anda
+      theme: themeProvider.currentTheme, // Tema yang dipilih
+      themeMode: ThemeMode
+          .light, // Anda bisa mengatur ke ThemeMode.dark jika menggunakan tema gelap
+      home: MainScreen(), // Halaman awal aplikasi
+      builder: (context, child) {
+        return DefaultTextStyle(
+          style: TextStyle(
+              fontFamily:
+                  fontProvider.currentFont), // Mengubah font secara global
+          child: child!,
+        );
+      },
     );
   }
 }
